@@ -429,7 +429,7 @@ namespace LaundrySystem
                     selectedServiceId = null;
                     _context.viewManageServices.Load();
                     dataGridView1.Refresh();
-                    MessageBox.Show("Successfully updated employee data with ID : " + service.IdService, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successfully updated employee data with Name : " + service.NameService, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
@@ -444,11 +444,12 @@ namespace LaundrySystem
             btnInsert.Show();
             btnDelete.Show();
             btnUpdate.Show();
+            ClearedField();
 
             btnSave.Hide();
             btnCancel.Hide();
 
-            EnabledFalse();
+            EnabledTrue();
         }
     }
 }

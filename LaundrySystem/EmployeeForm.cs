@@ -435,7 +435,7 @@ namespace LaundrySystem
                     selectEmployeeId = null;
                     _context.viewManageEmployees.Load();
                     dataGridView1.Refresh();
-                    MessageBox.Show("Successfully updated employee data with ID : " + employee.IdEmployee, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successfully updated employee data with Name : " + employee.NameEmployee, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else

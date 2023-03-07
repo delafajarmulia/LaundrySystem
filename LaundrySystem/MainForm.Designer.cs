@@ -33,6 +33,7 @@
             lblHay = new Label();
             lblTime = new Label();
             btnManageSevice = new Button();
+            btnManageCustomer = new Button();
             SuspendLayout();
             // 
             // btnManEmployee
@@ -83,11 +84,22 @@
             btnManageSevice.UseVisualStyleBackColor = true;
             btnManageSevice.Click += btnManageSevice_Click;
             // 
+            // btnManageCustomer
+            // 
+            btnManageCustomer.Location = new Point(130, 225);
+            btnManageCustomer.Name = "btnManageCustomer";
+            btnManageCustomer.Size = new Size(162, 57);
+            btnManageCustomer.TabIndex = 5;
+            btnManageCustomer.Text = "Manage Customer";
+            btnManageCustomer.UseVisualStyleBackColor = true;
+            btnManageCustomer.Click += btnManageCustomer_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnManageCustomer);
             Controls.Add(btnManageSevice);
             Controls.Add(lblTime);
             Controls.Add(lblHay);
@@ -106,5 +118,6 @@
         private Label lblHay;
         private Label lblTime;
         private Button btnManageSevice;
+        private Button btnManageCustomer;
     }
 }

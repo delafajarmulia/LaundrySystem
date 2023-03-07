@@ -9,8 +9,8 @@ namespace LaundrySystem.Model
     public class Customer
     {
         public int IdCustomer { get; set; }
-        public string NameCostumer { get; set; }
-        public string PhoneNumberCustomer { get; set; }
-        public string AddressCostumer { get; set; }
+        public string? NameCostumer { get; set; }
+        public string? PhoneNumberCustomer { get; set; }
+        public string? AddressCostumer { get; set; }
     }
 }
