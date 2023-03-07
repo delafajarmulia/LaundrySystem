@@ -32,6 +32,7 @@
             btnLogOut = new Button();
             lblHay = new Label();
             lblTime = new Label();
+            btnManageSevice = new Button();
             SuspendLayout();
             // 
             // btnManEmployee
@@ -72,11 +73,22 @@
             lblTime.TabIndex = 3;
             lblTime.Text = "time";
             // 
+            // btnManageSevice
+            // 
+            btnManageSevice.Location = new Point(130, 145);
+            btnManageSevice.Name = "btnManageSevice";
+            btnManageSevice.Size = new Size(162, 57);
+            btnManageSevice.TabIndex = 4;
+            btnManageSevice.Text = "Manage Service";
+            btnManageSevice.UseVisualStyleBackColor = true;
+            btnManageSevice.Click += btnManageSevice_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnManageSevice);
             Controls.Add(lblTime);
             Controls.Add(lblHay);
             Controls.Add(btnLogOut);
@@ -93,5 +105,6 @@
         private Button btnLogOut;
         private Label lblHay;
         private Label lblTime;
+        private Button btnManageSevice;
     }
 }

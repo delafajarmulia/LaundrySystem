@@ -56,5 +56,12 @@ namespace LaundrySystem
             employeeForm.SayHello(employeeName);
             employeeForm.ShowDialog();
         }
+
+        private void btnManageSevice_Click(object sender, EventArgs e)
+        {
+            ManageService manageService = new ManageService();
+            manageService.SayHello(employeeName);
+            manageService.ShowDialog();
+        }
     }
 }

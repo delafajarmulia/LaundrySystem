@@ -317,7 +317,7 @@ namespace LaundrySystem
 
                 _context.Employees.Add(employee);
                 await _context.SaveChangesAsync();
-                _context.Employees.Load();
+                _context.viewManageEmployees.Load();
                 dataGridView1.Refresh();
                 MessageBox.Show("Successfully inserted new employee data with ID : " + employee.IdEmployee, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -390,6 +390,7 @@ namespace LaundrySystem
 
                 _context.Employees.Update(employee);
                 await _context.SaveChangesAsync();
+                _context.viewManageEmployees.Load();
                 dataGridView1.Refresh();
                 MessageBox.Show("Successfully updated employee data with ID : " + employee.IdEmployee, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -421,17 +422,18 @@ namespace LaundrySystem
         {
             if (selectEmployeeId != null)
             {
-                if (MessageBox.Show("Are you sure you want to delete this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                var employee = await _context.Employees.Where(m => m.IdEmployee == selectEmployeeId).FirstAsync();
+
+                if (MessageBox.Show("Are you sure you want to delete "+ employee.NameEmployee + " from this data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
                     return;
                 }
                 else
-                {
-                    var employee = await _context.Employees.Where(m => m.IdEmployee == selectEmployeeId).FirstAsync();
+                {   
                     _context.Employees.Remove(employee);
                     await _context.SaveChangesAsync();
                     selectEmployeeId = null;
-                    _context.Employees.Load();
+                    _context.viewManageEmployees.Load();
                     dataGridView1.Refresh();
                     MessageBox.Show("Successfully updated employee data with ID : " + employee.IdEmployee, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

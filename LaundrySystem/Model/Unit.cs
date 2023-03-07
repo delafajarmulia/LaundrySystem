@@ -9,6 +9,6 @@ namespace LaundrySystem.Model
     public class Unit
     {
         public int IdUnit { get; set; }
-        public string NameUnit { get; set; }
+        public string? NameUnit { get; set; }
     }
 }
