@@ -70,5 +70,12 @@ namespace LaundrySystem
             manageCustomer.SayHello(employeeName);
             manageCustomer.ShowDialog();
         }
+
+        private void btnManPack_Click(object sender, EventArgs e)
+        {
+            ManagePackage managePackage = new ManagePackage();
+            managePackage.SayHello(employeeName);
+            managePackage.ShowDialog();
+        }
     }
 }

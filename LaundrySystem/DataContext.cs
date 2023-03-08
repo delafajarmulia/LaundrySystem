@@ -30,6 +30,7 @@ namespace LaundrySystem
         // VIEW //
         public DbSet<ViewManageEmployee> viewManageEmployees { get; set; }
         public DbSet<ViewManageService> viewManageServices { get; set; }
+        public DbSet<ViewManagePackage> viewManagePackages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -96,6 +97,12 @@ namespace LaundrySystem
             {
                 c.HasKey(x => x.IdService);
                 c.ToView("ViewManageService");
+            });
+
+            modelBuilder.Entity<ViewManagePackage>(v =>
+            {
+                v.HasKey(x => x.IdService);
+                v.ToView("ViewManagePackage");
             });
         }
     }

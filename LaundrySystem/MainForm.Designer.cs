@@ -34,6 +34,7 @@
             lblTime = new Label();
             btnManageSevice = new Button();
             btnManageCustomer = new Button();
+            btnManPack = new Button();
             SuspendLayout();
             // 
             // btnManEmployee
@@ -94,11 +95,22 @@
             btnManageCustomer.UseVisualStyleBackColor = true;
             btnManageCustomer.Click += btnManageCustomer_Click;
             // 
+            // btnManPack
+            // 
+            btnManPack.Location = new Point(356, 68);
+            btnManPack.Name = "btnManPack";
+            btnManPack.Size = new Size(162, 57);
+            btnManPack.TabIndex = 6;
+            btnManPack.Text = "Manage Package";
+            btnManPack.UseVisualStyleBackColor = true;
+            btnManPack.Click += btnManPack_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnManPack);
             Controls.Add(btnManageCustomer);
             Controls.Add(btnManageSevice);
             Controls.Add(lblTime);
@@ -119,5 +131,6 @@
         private Label lblTime;
         private Button btnManageSevice;
         private Button btnManageCustomer;
+        private Button btnManPack;
     }
 }
