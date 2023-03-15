@@ -42,11 +42,13 @@
             packageBindingSource = new BindingSource(components);
             dataGridView2 = new DataGridView();
             idPackageDataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            IdDetailPackage = new DataGridViewTextBoxColumn();
             totalUnitServiceDetailPackageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             IdService = new DataGridViewTextBoxColumn();
             EstimationDurationService = new DataGridViewTextBoxColumn();
             PriceUnitService = new DataGridViewTextBoxColumn();
             NameService = new DataGridViewTextBoxColumn();
+            Delete = new DataGridViewButtonColumn();
             viewManagePackageBindingSource1 = new BindingSource(components);
             viewManagePackageBindingSource = new BindingSource(components);
             cmbSerach = new ComboBox();
@@ -181,7 +183,7 @@
             dataGridView2.AllowUserToDeleteRows = false;
             dataGridView2.AutoGenerateColumns = false;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { idPackageDataGridViewTextBoxColumn1, totalUnitServiceDetailPackageDataGridViewTextBoxColumn, IdService, EstimationDurationService, PriceUnitService, NameService });
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { idPackageDataGridViewTextBoxColumn1, IdDetailPackage, totalUnitServiceDetailPackageDataGridViewTextBoxColumn, IdService, EstimationDurationService, PriceUnitService, NameService, Delete });
             dataGridView2.DataSource = viewManagePackageBindingSource1;
             dataGridView2.Location = new Point(22, 318);
             dataGridView2.Name = "dataGridView2";
@@ -189,6 +191,7 @@
             dataGridView2.RowTemplate.Height = 29;
             dataGridView2.Size = new Size(895, 188);
             dataGridView2.TabIndex = 8;
+            dataGridView2.CellContentClick += dataGridView2_CellContentClick;
             // 
             // idPackageDataGridViewTextBoxColumn1
             // 
@@ -197,6 +200,14 @@
             idPackageDataGridViewTextBoxColumn1.MinimumWidth = 6;
             idPackageDataGridViewTextBoxColumn1.Name = "idPackageDataGridViewTextBoxColumn1";
             idPackageDataGridViewTextBoxColumn1.Width = 125;
+            // 
+            // IdDetailPackage
+            // 
+            IdDetailPackage.DataPropertyName = "IdDetailPackage";
+            IdDetailPackage.HeaderText = "IdDetailPackage";
+            IdDetailPackage.MinimumWidth = 6;
+            IdDetailPackage.Name = "IdDetailPackage";
+            IdDetailPackage.Width = 125;
             // 
             // totalUnitServiceDetailPackageDataGridViewTextBoxColumn
             // 
@@ -238,6 +249,15 @@
             NameService.Name = "NameService";
             NameService.Width = 125;
             // 
+            // Delete
+            // 
+            Delete.HeaderText = "Delete";
+            Delete.MinimumWidth = 6;
+            Delete.Name = "Delete";
+            Delete.Text = "Delete";
+            Delete.UseColumnTextForButtonValue = true;
+            Delete.Width = 125;
+            // 
             // viewManagePackageBindingSource1
             // 
             viewManagePackageBindingSource1.DataSource = typeof(Model.ViewManagePackage);
@@ -260,6 +280,8 @@
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(164, 27);
             txtSearch.TabIndex = 39;
+            txtSearch.Click += autoCompleteByName;
+            txtSearch.Leave += txtSearch_LeaveFocus;
             // 
             // btnInsert
             // 
@@ -495,15 +517,17 @@
         private ComboBox cmbService;
         private NumericUpDown NUDTotalUnit;
         private Button btnAdd;
+        private BindingSource viewManagePackageBindingSource1;
+        private Label label2;
+        private NumericUpDown NUDPrice;
+        private Label lblAction;
         private DataGridViewTextBoxColumn idPackageDataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn IdDetailPackage;
         private DataGridViewTextBoxColumn totalUnitServiceDetailPackageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn IdService;
         private DataGridViewTextBoxColumn EstimationDurationService;
         private DataGridViewTextBoxColumn PriceUnitService;
         private DataGridViewTextBoxColumn NameService;
-        private BindingSource viewManagePackageBindingSource1;
-        private Label label2;
-        private NumericUpDown NUDPrice;
-        private Label lblAction;
+        private DataGridViewButtonColumn Delete;
     }
 }

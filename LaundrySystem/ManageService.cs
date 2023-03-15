@@ -44,7 +44,7 @@ namespace LaundrySystem
             btnSave.Hide();
             cmbSerach.Items.Add("Name Service");
             cmbSerach.Items.Add("Unit");
-            //cmbSerach.Items.Add("Price");
+            cmbSerach.Items.Add("Price");
             cmbSerach.Items.Add("Category");
         }
 
@@ -75,15 +75,15 @@ namespace LaundrySystem
             txtSearch.AutoCompleteCustomSource = autoCompleteStringCollection;
         }
 
-        /*private void autoCompleteByPrice()
+        private void autoCompleteByPrice()
         {
-            var price = _context.Services.Local.Select(n => n.PriceUnitService).ToArray();
+            var price = _context.Services.Local.Select(n => n.PriceUnitService.ToString()).ToArray();
             AutoCompleteStringCollection autoCompleteStringCollection = new AutoCompleteStringCollection();
-            autoCompleteStringCollection.AddRange(Convert.ToInt32(Math.Round(price, 0)));
+            autoCompleteStringCollection.AddRange(price);
             txtSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
             txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
             txtSearch.AutoCompleteCustomSource = autoCompleteStringCollection;
-        }*/
+        }
 
         private void autoCompleteByCategory()
         {
@@ -109,6 +109,10 @@ namespace LaundrySystem
             {
                 autoCompleteByCategory();
             }
+            else if (cmbSerach.Text == "Price")
+            {
+                autoCompleteByPrice();
+            }
             else
             {
                 return;
@@ -122,7 +126,7 @@ namespace LaundrySystem
                 _context.viewManageServices.Load();
                 string name = txtSearch.Text;
                 List<ViewManageService>? viewManageServices = await _context.viewManageServices
-                                                                .Where(v => v.NameService == name)
+                                                                .Where(v => v.NameService.Contains(name))
                                                                 .ToListAsync();
 
                 viewManageServiceBindingSource.DataSource = viewManageServices.ToList();
@@ -133,18 +137,29 @@ namespace LaundrySystem
                 _context.viewManageServices.Load();
                 string unit = txtSearch.Text;
                 List<ViewManageService>? viewManageServices = await _context.viewManageServices
-                                                                .Where(v => v.NameUnit == unit)
+                                                                .Where(v => v.NameUnit.Contains(unit))
                                                                 .ToListAsync();
 
                 viewManageServiceBindingSource.DataSource = viewManageServices.ToList();
                 dataGridView1.Refresh();
             }
-            else if (txtSearch.Text == "Category")
+            else if (cmbSerach.Text == "Category")
             {
                 _context.viewManageServices.Load();
                 string category = txtSearch.Text;
                 List<ViewManageService>? viewManageServices = await _context.viewManageServices
-                                                                .Where(v => v.NameCategory == category)
+                                                                .Where(v => v.NameCategory.Contains(category))
+                                                                .ToListAsync();
+
+                viewManageServiceBindingSource.DataSource = viewManageServices.ToList();
+                dataGridView1.Refresh();
+            }
+            else if (cmbSerach.Text == "Price")
+            {
+                _context.viewManageServices.Load();
+                string price = txtSearch.Text;
+                List<ViewManageService>? viewManageServices = await _context.viewManageServices
+                                                                .Where(v => v.PriceUnitService.ToString().Contains(price))
                                                                 .ToListAsync();
 
                 viewManageServiceBindingSource.DataSource = viewManageServices.ToList();
@@ -327,7 +342,7 @@ namespace LaundrySystem
                 await _context.SaveChangesAsync();
                 _context.viewManageServices.Load();
                 dataGridView1.Refresh();
-                MessageBox.Show("Successfully inserted new employee data with ID : " + service.IdService, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Successfully inserted new service data with ID : " + service.IdService, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

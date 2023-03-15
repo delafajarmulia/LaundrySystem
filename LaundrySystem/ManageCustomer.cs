@@ -90,30 +90,37 @@ namespace LaundrySystem
             }
         }
 
-        /*private async void txtSearch_LeaveFocus(object sender, EventArgs e)
+        private async void txtSearch_LeaveFocus(object sender, EventArgs e)
         {
             if (cmbSerach.Text == "Name")
             {
+                _context.Customers.Load();
                 string name = txtSearch.Text;
-                List<Service>? services = await _context.Customers.Where(v => v.NameCostumer == name).ToListAsync();
+                List<Customer>? services = await _context.Customers.Where(v => v.NameCostumer.Contains(name)).ToListAsync();
                 customerBindingSource.DataSource = services.ToList();
                 dataGridView1.Refresh();
             }
             else if (cmbSerach.Text == "Address")
             {
+                _context.Customers.Load();
                 string address = txtSearch.Text;
-                List<Service>? services = await _context.Customers.Where(v => v.NameCostumer == address).ToListAsync();
-                customerBindingSource.DataSource = services.ToList();
-                dataGridView1.Refresh();
-            } 
-            else if (cmbSerach.Text == "Phone Number")
-            {
-                string phonNum = txtSearch.Text;
-                List<Service>? services = await _context.Customers.Where(v => v.PhoneNumberCustomer == phonNum).ToListAsync();
+                List<Customer>? services = await _context.Customers.Where(v => v.AddressCostumer.Contains(address)).ToListAsync();
                 customerBindingSource.DataSource = services.ToList();
                 dataGridView1.Refresh();
             }
-        }*/
+            else if (cmbSerach.Text == "Phone Number")
+            {
+                _context.Customers.Load();
+                string phonNum = txtSearch.Text;
+                List<Customer>? services = await _context.Customers.Where(v => v.PhoneNumberCustomer.Contains(phonNum)).ToListAsync();
+                customerBindingSource.DataSource = services.ToList();
+                dataGridView1.Refresh();
+            }
+            else
+            {
+                return;
+            }
+        }
 
         public void SayHello(string name)
         {

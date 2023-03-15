@@ -216,7 +216,7 @@ namespace LaundrySystem
                 _context.viewManageEmployees.Load();
                 string emName = txtSearch.Text;
                 List<ViewManageEmployee>? viewManageEmployee = await _context.viewManageEmployees
-                                                            .Where(v => v.NameEmployee == emName)
+                                                            .Where(v => v.NameEmployee.Contains(emName))
                                                             .ToListAsync();
 
                 viewManageEmployeeBindingSource.DataSource = viewManageEmployee.ToList();
@@ -227,7 +227,7 @@ namespace LaundrySystem
                 _context.viewManageEmployees.Load();
                 string emEmail = txtSearch.Text;
                 List<ViewManageEmployee>? viewManageEmployee = await _context.viewManageEmployees
-                                                            .Where(v => v.EmailEmploye == emEmail)
+                                                            .Where(v => v.EmailEmploye.Contains(emEmail))
                                                             .ToListAsync();
 
                 viewManageEmployeeBindingSource.DataSource = viewManageEmployee.ToList();
@@ -238,7 +238,7 @@ namespace LaundrySystem
                 _context.viewManageEmployees.Load();
                 string emPhone = txtSearch.Text;
                 List<ViewManageEmployee>? viewManageEmployee = await _context.viewManageEmployees
-                                                            .Where(v => v.PhoneNumberEmployee == emPhone)
+                                                            .Where(v => v.PhoneNumberEmployee.Contains(emPhone))
                                                             .ToListAsync();
 
                 viewManageEmployeeBindingSource.DataSource = viewManageEmployee.ToList();

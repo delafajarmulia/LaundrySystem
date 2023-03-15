@@ -31,6 +31,8 @@ namespace LaundrySystem
         public DbSet<ViewManageEmployee> viewManageEmployees { get; set; }
         public DbSet<ViewManageService> viewManageServices { get; set; }
         public DbSet<ViewManagePackage> viewManagePackages { get; set; }
+        public DbSet<ViewHeaderTransaction> viewHeaderTransactions { get; set; }
+        public DbSet<ViewDetailTransaction> viewDetailTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -101,8 +103,20 @@ namespace LaundrySystem
 
             modelBuilder.Entity<ViewManagePackage>(v =>
             {
-                v.HasKey(x => x.IdService);
+                v.HasKey(x => x.IdDetailPackage);
                 v.ToView("ViewManagePackage");
+            });
+
+            modelBuilder.Entity<ViewHeaderTransaction>(h =>
+            {
+                h.HasKey(x => x.IdHeaderTransaction);
+                h.ToView("ViewHeaderTransaction");
+            });
+
+            modelBuilder.Entity<ViewDetailTransaction>(dt =>
+            {
+                dt.HasKey(x => x.IdDetailTransaction);
+                dt.ToView("ViewDetailTransaction");
             });
         }
     }

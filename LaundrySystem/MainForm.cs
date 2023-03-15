@@ -77,5 +77,26 @@ namespace LaundrySystem
             managePackage.SayHello(employeeName);
             managePackage.ShowDialog();
         }
+
+        private void btnServTrans_Click(object sender, EventArgs e)
+        {
+            ServiceTransaction serviceTransaction = new ServiceTransaction();
+            serviceTransaction.SayHey(employeeName);
+            serviceTransaction.ShowDialog();
+        }
+
+        private void btnPackTrans_Click(object sender, EventArgs e)
+        {
+            PackageTransaction packageTransaction = new PackageTransaction();
+            packageTransaction.SayHello(employeeName);
+            packageTransaction.ShowDialog();
+        }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            ViewTransactionForm viewTransactionForm = new ViewTransactionForm();
+            viewTransactionForm.SayHelllo(employeeName);
+            viewTransactionForm.ShowDialog();
+        }
     }
 }

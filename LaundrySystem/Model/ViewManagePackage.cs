@@ -10,6 +10,7 @@ namespace LaundrySystem.Model
     {
         public int? IdService { get; set; }
         public int IdPackage { get; set; }
+        public int IdDetailPackage { get; set; }
         public int TotalUnitServiceDetailPackage { get; set; }
         public int EstimationDurationService { get; set; }
         public int PriceUnitService { get; set; }

@@ -18,7 +18,10 @@ namespace LaundrySystem
         private int? selectedPackageId;
         private int estimationDuration;
         private string? operation;
-        private string packageName, description, stringPrice;
+        private string packageName;
+        private string description;
+        private string stringPrice;
+
         public ManagePackage()
         {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace LaundrySystem
             BtnUIDShow();
             PackageHide();
             CmbService();
+            cmbSerach.Items.Add("Name Package");
         }
 
         protected override void OnClosed(EventArgs e)
@@ -49,6 +53,26 @@ namespace LaundrySystem
             base.OnClosed(e);
             _context.Dispose();
             _context = null;
+        }
+
+        private void autoCompleteByName(object sender, EventArgs e)
+        {
+            var namePack = _context.Packages.Local.Select(p => p.NamePackage).ToArray();
+            AutoCompleteStringCollection autoCompleteStringCollection = new AutoCompleteStringCollection();
+            autoCompleteStringCollection.AddRange(namePack);
+            txtSearch.AutoCompleteMode = AutoCompleteMode.Suggest;
+            txtSearch.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txtSearch.AutoCompleteCustomSource = autoCompleteStringCollection;
+        }
+
+        private async void txtSearch_LeaveFocus(object sender, EventArgs e)
+        {
+            _context.Packages.Load();
+            string name = txtSearch.Text;
+            List<Package>? packages = await _context.Packages.Where(v => v.NamePackage.Contains(name)).ToListAsync();
+
+            packageBindingSource.DataSource = packages.ToList();
+            dataGridView1.Refresh();
         }
 
         private void ServiceShow()
@@ -144,6 +168,12 @@ namespace LaundrySystem
             RTDescription.Text = "";
         }
 
+        private async Task loadServiceDG(int? packageId)
+        {
+            List<ViewManagePackage>? viewManagePackage = await _context.viewManagePackages.Where(v => v.IdPackage == packageId).ToListAsync();
+            viewManagePackageBindingSource1.DataSource = viewManagePackage.ToList();
+        }
+
         public void SayHello(string name)
         {
             lblHay.Text = $"Hello {name}";
@@ -162,7 +192,7 @@ namespace LaundrySystem
             DataGridViewRow row = dataGridView1.Rows[index];
             var selectedPackage = (Package)packageBindingSource.List[index];
             selectedPackageId = selectedPackage.IdPackage;
-            estimationDuration = 0;
+
 
             ServiceShow();
 
@@ -170,22 +200,45 @@ namespace LaundrySystem
             description = row.Cells[3].Value.ToString();
             stringPrice = row.Cells[2].Value.ToString();
 
-            List<ViewManagePackage>? viewManagePackage = await _context.viewManagePackages.Where(v => v.IdPackage == selectedPackageId).ToListAsync();
-            viewManagePackageBindingSource1.DataSource = viewManagePackage.ToList();
-            foreach (var p in viewManagePackage)
+            await loadServiceDG(selectedPackageId);
+
+        }
+
+        private async void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView2.Columns[e.ColumnIndex].Name == "Delete")
             {
+                int index = e.RowIndex;
+                DataGridViewRow row = dataGridView2.Rows[index];
+                var selectedService = (ViewManagePackage)viewManagePackageBindingSource1.List[index];
+                int selectedServiceId = (int)selectedService.IdService;
+                int idDEtailPack = (int)selectedService.IdDetailPackage;
+                int esDurSer = (int)selectedService.EstimationDurationService;
+                int idPack = (int)selectedService.IdPackage;
 
-                estimationDuration += p.EstimationDurationService;
+                if (MessageBox.Show("Are you sure want to delete this service?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Menghapus detail package dari db berdasarkan id dari package
+                    DetailPackage? detailPackage = await _context.DetailPackages.Where(i => i.IdDetailPackage == idDEtailPack).FirstOrDefaultAsync();
+                    _context.DetailPackages.Remove(detailPackage);
 
+                    Package? package = await _context.Packages.Where(p => p.IdPackage == idPack).FirstOrDefaultAsync();
+                    package.DurationPackage = package.DurationPackage - esDurSer;
+                    await _context.SaveChangesAsync();
+                    _context.Packages.Load();
+                    dataGridView1.Refresh();
+
+                    await loadServiceDG(selectedPackageId);
+                    MessageBox.Show("Successfully deleted service", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else return;
             }
-            dataGridView2.Refresh();
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             string serName = cmbService.SelectedItem.ToString();
             int serId = int.Parse(cmbService.SelectedValue.ToString());
-            DetailPackage? detailPackages = await _context.DetailPackages.Where(d => d.IdPackage == serId).FirstOrDefaultAsync();
 
             if (NUDTotalUnit.Value < 1)
             {
@@ -193,16 +246,30 @@ namespace LaundrySystem
             }
             else if (selectedPackageId != null)
             {
+                // get package
                 Package? package = await _context.Packages.Where(p => p.IdPackage == selectedPackageId).FirstOrDefaultAsync();
+
+                // create new detail package
                 DetailPackage detailPackage = new DetailPackage();
                 detailPackage.IdPackage = package.IdPackage;
                 detailPackage.IdService = serId;
                 detailPackage.TotalUnitServiceDetailPackage = Convert.ToInt32(Math.Round(NUDTotalUnit.Value, 0));
-
                 _context.DetailPackages.Add(detailPackage);
-                _context.SaveChangesAsync();
-                dataGridView2.Refresh();
-                MessageBox.Show($"Successfully added service {serName} to {package.NamePackage}", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // untuk menambahkan duratioon package sesuai dgn service yg baru
+                Service? service = await _context.Services.Where(p => p.IdService == serId).FirstOrDefaultAsync();
+                package.DurationPackage = package.DurationPackage + service.EstimationDurationService;
+                _context.Packages.Update(package);
+
+                // save ke db
+                await _context.SaveChangesAsync();
+                // lload package dan refresh dgview
+                _context.Packages.Load();
+                dataGridView1.Refresh();
+                await loadServiceDG(selectedPackageId);
+
+
+                MessageBox.Show("Successfully added service " + service.NameService +" to "+package.NamePackage , "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -217,7 +284,7 @@ namespace LaundrySystem
             lblAction.Text = "Action Insert";
         }
 
-        private async void actionInsert()
+        private async Task actionInsert()
         {
             if (txtPackName.Text == "" || RTDescription.Text == "" || NUDPrice.Value < 0)
             {
@@ -239,16 +306,17 @@ namespace LaundrySystem
             }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
+            var cek = RTDescription.Text;
             switch (operation)
             {
                 case "insert":
-                    actionInsert(); break;
+                    await actionInsert(); break;
                 case "update":
-                    actionUpdate(); break;
+                    await actionUpdate(); break;
                 case "delete":
-                    actionDelete(); break;
+                    await actionDelete(); break;
                 default: break;
             }
 
@@ -256,7 +324,7 @@ namespace LaundrySystem
             ClearedField();
             PackageHide();
             ServiceHide();
-            dataGridView2.Rows.Clear(); 
+            dataGridView2.Rows.Clear();
             lblAction.Text = "Select Action";
         }
 
@@ -268,8 +336,8 @@ namespace LaundrySystem
             }
             else
             {
-                txtPackName.Text = packageName.ToString() + txtPackName.Text.ToString();
-                RTDescription.Text = description.ToString() + RTDescription.Text.ToString();
+                txtPackName.Text = packageName;
+                RTDescription.Text = description;
                 NUDPrice.Value = Convert.ToInt32(stringPrice);
                 BtnUIDHide();
                 ServiceHide();
@@ -281,14 +349,16 @@ namespace LaundrySystem
             }
         }
 
-        private async void actionUpdate()
+        private async Task actionUpdate()
         {
             if (selectedPackageId != null)
             {
                 Package? package = await _context.Packages.Where(i => i.IdPackage == selectedPackageId).FirstOrDefaultAsync();
-                package.DescriptionPackage = RTDescription.Text;
+                var des = RTDescription.Text;
+                string name = txtPackName.Text;
+                package.DescriptionPackage = des;
                 package.PricePackage = Convert.ToInt32(Math.Round(NUDPrice.Value, 0));
-                package.NamePackage = txtPackName.Text;
+                package.NamePackage = name;
                 package.DurationPackage = estimationDuration;
 
                 _context.Packages.Update(package);
@@ -320,7 +390,7 @@ namespace LaundrySystem
             }
         }
 
-        private async void actionDelete()
+        private async Task actionDelete()
         {
             if (selectedPackageId != null)
             {
@@ -335,7 +405,7 @@ namespace LaundrySystem
                     await _context.SaveChangesAsync();
                     _context.Packages.Load();
                     dataGridView1.Refresh();
-                    MessageBox.Show("Successfully updated package data with Name : " + package.NamePackage, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successfully deleted package data with Name : " + package.NamePackage, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else

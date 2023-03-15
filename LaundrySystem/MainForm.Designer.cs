@@ -35,6 +35,9 @@
             btnManageSevice = new Button();
             btnManageCustomer = new Button();
             btnManPack = new Button();
+            btnServTrans = new Button();
+            btnPackTrans = new Button();
+            btnView = new Button();
             SuspendLayout();
             // 
             // btnManEmployee
@@ -49,7 +52,7 @@
             // 
             // btnLogOut
             // 
-            btnLogOut.Location = new Point(694, 12);
+            btnLogOut.Location = new Point(583, 21);
             btnLogOut.Name = "btnLogOut";
             btnLogOut.Size = new Size(94, 39);
             btnLogOut.TabIndex = 1;
@@ -60,7 +63,7 @@
             // lblHay
             // 
             lblHay.AutoSize = true;
-            lblHay.Location = new Point(559, 21);
+            lblHay.Location = new Point(448, 30);
             lblHay.Name = "lblHay";
             lblHay.Size = new Size(45, 20);
             lblHay.TabIndex = 2;
@@ -105,11 +108,44 @@
             btnManPack.UseVisualStyleBackColor = true;
             btnManPack.Click += btnManPack_Click;
             // 
+            // btnServTrans
+            // 
+            btnServTrans.Location = new Point(356, 145);
+            btnServTrans.Name = "btnServTrans";
+            btnServTrans.Size = new Size(162, 57);
+            btnServTrans.TabIndex = 7;
+            btnServTrans.Text = "Service Transaction";
+            btnServTrans.UseVisualStyleBackColor = true;
+            btnServTrans.Click += btnServTrans_Click;
+            // 
+            // btnPackTrans
+            // 
+            btnPackTrans.Location = new Point(356, 225);
+            btnPackTrans.Name = "btnPackTrans";
+            btnPackTrans.Size = new Size(162, 57);
+            btnPackTrans.TabIndex = 8;
+            btnPackTrans.Text = "Package Transaction";
+            btnPackTrans.UseVisualStyleBackColor = true;
+            btnPackTrans.Click += btnPackTrans_Click;
+            // 
+            // btnView
+            // 
+            btnView.Location = new Point(130, 305);
+            btnView.Name = "btnView";
+            btnView.Size = new Size(388, 57);
+            btnView.TabIndex = 9;
+            btnView.Text = "View Transaction";
+            btnView.UseVisualStyleBackColor = true;
+            btnView.Click += btnView_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(692, 450);
+            Controls.Add(btnView);
+            Controls.Add(btnPackTrans);
+            Controls.Add(btnServTrans);
             Controls.Add(btnManPack);
             Controls.Add(btnManageCustomer);
             Controls.Add(btnManageSevice);
@@ -132,5 +168,8 @@
         private Button btnManageSevice;
         private Button btnManageCustomer;
         private Button btnManPack;
+        private Button btnServTrans;
+        private Button btnPackTrans;
+        private Button btnView;
     }
 }

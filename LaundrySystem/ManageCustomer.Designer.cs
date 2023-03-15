@@ -265,6 +265,7 @@
             txtSearch.Size = new Size(164, 27);
             txtSearch.TabIndex = 38;
             txtSearch.Click += Search;
+            txtSearch.Leave += txtSearch_LeaveFocus;
             // 
             // ManageCustomer
             // 
